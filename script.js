@@ -1,1 +1,1 @@
-console.log("Trinetra Ads Website Loaded");
+console.log("Trinetra Adv Studio Website Loaded");
