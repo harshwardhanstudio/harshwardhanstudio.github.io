@@ -1122,18 +1122,45 @@ FOOTER
 
 .footer-social{
     display:flex;
-    gap:15px;
-    margin-top:20px;
+    gap:18px;
+    margin-top:25px;
 }
 
 .footer-social a{
-    width:42px;
-    height:42px;
+    width:48px;
+    height:48px;
     display:flex;
     align-items:center;
     justify-content:center;
     border-radius:50%;
     background:#111;
+    color:#fff;
+    font-size:22px;
+    text-decoration:none;
+    transition:.35s ease;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.footer-social a:hover{
+    transform:translateY(-6px) scale(1.08);
+}
+
+.footer-social a:nth-child(1):hover{
+    background:#E1306C;
+    color:#fff;
+    box-shadow:0 0 20px rgba(225,48,108,.45);
+}
+
+.footer-social a:nth-child(2):hover{
+    background:#FF0000;
+    color:#fff;
+    box-shadow:0 0 20px rgba(255,0,0,.45);
+}
+
+.footer-social a:nth-child(3):hover{
+    background:#0A66C2;
+    color:#fff;
+    box-shadow:0 0 20px rgba(10,102,194,.45);
 }
 
 .footer-bottom{
