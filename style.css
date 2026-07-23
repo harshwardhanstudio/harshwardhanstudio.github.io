@@ -56,7 +56,55 @@ body{
     line-height:1.7;
 
 }
+.mesh-bg{
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: -2;
+    background: #0a0a0f;
+}
 
+.mesh-bg span{
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: .45;
+    animation: float 18s infinite ease-in-out;
+}
+
+.mesh-bg span:nth-child(1){
+    background:#6c2cff;
+    top:-10%;
+    left:-10%;
+}
+
+.mesh-bg span:nth-child(2){
+    background:#00c8ff;
+    top:40%;
+    right:-10%;
+    animation-delay:-6s;
+}
+
+.mesh-bg span:nth-child(3){
+    background:#ff2d95;
+    bottom:-15%;
+    left:35%;
+    animation-delay:-12s;
+}
+
+@keyframes float{
+    0%,100%{
+        transform:translate(0,0) scale(1);
+    }
+    33%{
+        transform:translate(150px,-80px) scale(1.2);
+    }
+    66%{
+        transform:translate(-120px,120px) scale(.9);
+    }
+}
 img{
 
     max-width:100%;
