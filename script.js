@@ -1,70 +1,132 @@
-/*==============================
-SMOOTH SCROLL
-==============================*/
+/*=========================================
+HARTION STUDIO SCRIPT
+PART 1
+=========================================*/
 
-document.querySelectorAll('nav a').forEach(link => {
+/* Sticky Header */
 
-link.addEventListener('click', function(e){
+const header = document.querySelector("header");
 
-e.preventDefault();
+window.addEventListener("scroll", () => {
 
-const target=document.querySelector(this.getAttribute('href'));
-
-target.scrollIntoView({
-
-behavior:'smooth'
-
-});
-
-});
+    if (window.scrollY > 80) {
+        header.classList.add("sticky");
+    } else {
+        header.classList.remove("sticky");
+    }
 
 });
 
-/*==============================
-HEADER SCROLL EFFECT
-==============================*/
+/* Mobile Menu */
 
-const header=document.querySelector("header");
+const menuToggle = document.querySelector(".menu-toggle");
+const navLinks = document.querySelector(".nav-links");
 
-window.addEventListener("scroll",()=>{
+if (menuToggle) {
 
-if(window.scrollY>80){
+    menuToggle.addEventListener("click", () => {
 
-header.style.background="rgba(0,0,0,0.95)";
-header.style.padding="14px 8%";
-header.style.boxShadow="0 10px 30px rgba(0,0,0,.4)";
+        navLinks.classList.toggle("active");
+        menuToggle.classList.toggle("active");
 
-}else{
-
-header.style.background="rgba(0,0,0,.75)";
-header.style.padding="18px 8%";
-header.style.boxShadow="none";
+    });
 
 }
 
+/* Close Menu */
+
+document.querySelectorAll(".nav-links a").forEach(link => {
+
+    link.addEventListener("click", () => {
+
+        navLinks.classList.remove("active");
+        menuToggle.classList.remove("active");
+
+    });
+
 });
 
-/*==============================
-SCROLL REVEAL
-==============================*/
+/* Smooth Scroll */
 
-const reveals=document.querySelectorAll(
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
-".service-card,.portfolio-card,.stat-box,.testimonial-card,.contact-card,.about-image,.about-content"
+    anchor.addEventListener("click", function (e) {
 
+        e.preventDefault();
+
+        const target = document.querySelector(this.getAttribute("href"));
+
+        if (target) {
+
+            window.scrollTo({
+
+                top: target.offsetTop - 70,
+
+                behavior: "smooth"
+
+            });
+
+        }
+
+    });
+
+});
+
+/* Active Navigation */
+
+const sections = document.querySelectorAll("section");
+const navItems = document.querySelectorAll(".nav-links a");
+
+window.addEventListener("scroll", () => {
+
+    let current = "";
+
+    sections.forEach(section => {
+
+        const sectionTop = section.offsetTop - 120;
+        const sectionHeight = section.clientHeight;
+
+        if (pageYOffset >= sectionTop) {
+            current = section.getAttribute("id");
+        }
+
+    });
+
+    navItems.forEach(link => {
+
+        link.classList.remove("active");
+
+        if (link.getAttribute("href") === "#" + current) {
+
+            link.classList.add("active");
+
+        }
+
+    });
+
+});
+/*=========================================
+HARTION STUDIO SCRIPT
+PART 2
+=========================================*/
+
+/* Scroll Reveal */
+
+const revealElements = document.querySelectorAll(
+".fade-up,.fade-left,.fade-right"
 );
 
-function reveal(){
+function revealOnScroll(){
 
-reveals.forEach(item=>{
+const trigger = window.innerHeight - 100;
 
-const top=item.getBoundingClientRect().top;
+revealElements.forEach(el=>{
 
-const windowHeight=window.innerHeight;
+const top = el.getBoundingClientRect().top;
 
-if(top<windowHeight-120){
+if(top < trigger){
 
-item.classList.add("active");
+el.classList.add("active");
 
 }
 
@@ -72,37 +134,37 @@ item.classList.add("active");
 
 }
 
-window.addEventListener("scroll",reveal);
+window.addEventListener("scroll",revealOnScroll);
 
-reveal();
+revealOnScroll();
 
-/*==============================
-COUNTER ANIMATION
-==============================*/
+/* Counter */
 
-const counters=document.querySelectorAll(".stat-box h2");
+const counters=document.querySelectorAll(".counter-box h2");
 
-let started=false;
+let counterStarted=false;
 
-window.addEventListener("scroll",()=>{
+function startCounter(){
 
-const stats=document.querySelector("#stats");
+if(counterStarted) return;
 
-if(!stats) return;
+const section=document.querySelector(".counter");
 
-const top=stats.getBoundingClientRect().top;
+if(!section) return;
 
-if(top<window.innerHeight && !started){
+const top=section.getBoundingClientRect().top;
 
-started=true;
+if(top<window.innerHeight-120){
+
+counterStarted=true;
 
 counters.forEach(counter=>{
 
-const target=parseInt(counter.innerText);
+const target=+counter.innerText.replace(/\D/g,'');
 
 let count=0;
 
-const speed=target/80;
+const speed=target/100;
 
 const update=()=>{
 
@@ -110,7 +172,7 @@ count+=speed;
 
 if(count<target){
 
-counter.innerText=Math.floor(count)+"+";
+counter.innerText=Math.ceil(count)+"+";
 
 requestAnimationFrame(update);
 
@@ -120,7 +182,7 @@ counter.innerText=target+"+";
 
 }
 
-}
+};
 
 update();
 
@@ -128,35 +190,33 @@ update();
 
 }
 
-});
+}
 
-/*==============================
-BACK TO TOP BUTTON
-==============================*/
+window.addEventListener("scroll",startCounter);
 
-const topBtn=document.createElement("button");
+/* Back To Top */
 
-topBtn.innerHTML="↑";
-
-topBtn.id="topBtn";
-
-document.body.appendChild(topBtn);
+const topBtn=document.querySelector(".back-to-top");
 
 window.addEventListener("scroll",()=>{
 
 if(window.scrollY>500){
 
-topBtn.classList.add("show");
+topBtn.style.opacity="1";
+topBtn.style.visibility="visible";
 
 }else{
 
-topBtn.classList.remove("show");
+topBtn.style.opacity="0";
+topBtn.style.visibility="hidden";
 
 }
 
 });
 
-topBtn.onclick=()=>{
+if(topBtn){
+
+topBtn.addEventListener("click",()=>{
 
 window.scrollTo({
 
@@ -166,193 +226,198 @@ behavior:"smooth"
 
 });
 
-};
+});
 
-/*==============================
-ACTIVE NAVIGATION
-==============================*/
+}
 
-const sections=document.querySelectorAll("section");
-const navLinks=document.querySelectorAll("nav a");
+/* Hero Image Animation */
+
+const heroImage=document.querySelector(".hero-image");
+
+window.addEventListener("mousemove",(e)=>{
+
+if(!heroImage) return;
+
+const x=(window.innerWidth/2-e.pageX)/35;
+
+const y=(window.innerHeight/2-e.pageY)/35;
+
+heroImage.style.transform=`translate(${x}px,${y}px)`;
+
+});
+
+/* Header Shadow */
 
 window.addEventListener("scroll",()=>{
 
-let current="";
+if(window.scrollY>60){
 
-sections.forEach(section=>{
+header.style.boxShadow="0 8px 30px rgba(0,0,0,.35)";
 
-const top=section.offsetTop-120;
+}else{
 
-const height=section.clientHeight;
-
-if(pageYOffset>=top){
-
-current=section.getAttribute("id");
+header.style.boxShadow="none";
 
 }
 
 });
+/*=========================================
+HARTION STUDIO SCRIPT
+PART 3
+=========================================*/
 
-navLinks.forEach(link=>{
+/* Portfolio Filter */
 
-link.classList.remove("active");
+const filterBtns = document.querySelectorAll(".filter-btn");
+const portfolioItems = document.querySelectorAll(".portfolio-item");
 
-if(link.getAttribute("href")==="#"+current){
+filterBtns.forEach(btn => {
 
-link.classList.add("active");
+    btn.addEventListener("click", () => {
 
-}
+        filterBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
 
-});
+        const filter = btn.dataset.filter;
 
-});
+        portfolioItems.forEach(item => {
 
-/*==============================
-PORTFOLIO IMAGE HOVER
-==============================*/
+            if (
+                filter === "all" ||
+                item.dataset.category === filter
+            ) {
 
-document.querySelectorAll(".portfolio-card img").forEach(img=>{
+                item.style.display = "block";
 
-img.addEventListener("click",()=>{
+                setTimeout(() => {
 
-const overlay=document.createElement("div");
+                    item.style.opacity = "1";
+                    item.style.transform = "scale(1)";
 
-overlay.style.position="fixed";
-overlay.style.left="0";
-overlay.style.top="0";
-overlay.style.width="100%";
-overlay.style.height="100%";
-overlay.style.background="rgba(0,0,0,.92)";
-overlay.style.display="flex";
-overlay.style.alignItems="center";
-overlay.style.justifyContent="center";
-overlay.style.cursor="zoom-out";
-overlay.style.zIndex="99999";
+                }, 150);
 
-const image=document.createElement("img");
+            } else {
 
-image.src=img.src;
+                item.style.opacity = "0";
+                item.style.transform = "scale(.8)";
 
-image.style.maxWidth="90%";
-image.style.maxHeight="90%";
-image.style.borderRadius="15px";
+                setTimeout(() => {
 
-overlay.appendChild(image);
+                    item.style.display = "none";
 
-document.body.appendChild(overlay);
+                }, 250);
 
-overlay.onclick=()=>{
+            }
 
-overlay.remove();
+        });
 
-};
-
-});
-
-});
-
-/*==============================
-LOADING FINISHED
-==============================*/
-
-window.addEventListener("load",()=>{
-
-document.body.classList.add("loaded");
-
-});
-const glow=document.querySelector(".mouse-glow");
-
-document.addEventListener("mousemove",(e)=>{
-
-glow.style.left=e.clientX+"px";
-
-glow.style.top=e.clientY+"px";
-
-});
-const menu=document.querySelector(".menu-toggle");
-
-const nav=document.querySelector("nav");
-
-menu.addEventListener("click",()=>{
-
-nav.classList.toggle("active");
-
-});
-
-document.querySelectorAll("nav a").forEach(link=>{
-
-link.addEventListener("click",()=>{
-
-nav.classList.remove("active");
-
-});
-
-});
-// =========================
-// PREMIUM MOBILE MENU
-// =========================
-
-const menuToggle = document.getElementById("menu-toggle");
-const mobileMenu = document.getElementById("mobile-menu");
-const closeBtn = document.getElementById("close-btn");
-const mobileLinks = document.querySelectorAll(".mobile-nav a");
-
-// Open Menu
-menuToggle.addEventListener("click", () => {
-    mobileMenu.classList.add("active");
-    document.body.style.overflow = "hidden";
-});
-
-// Close Menu
-closeBtn.addEventListener("click", () => {
-    mobileMenu.classList.remove("active");
-    document.body.style.overflow = "auto";
-});
-
-// Close menu after clicking a link
-mobileLinks.forEach(link => {
-    link.addEventListener("click", () => {
-        mobileMenu.classList.remove("active");
-        document.body.style.overflow = "auto";
     });
+
 });
 
-// Close menu with ESC key
-document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-        mobileMenu.classList.remove("active");
-        document.body.style.overflow = "auto";
+/* FAQ */
+
+document.querySelectorAll(".faq-item").forEach(item => {
+
+    const question = item.querySelector(".faq-question");
+
+    question.addEventListener("click", () => {
+
+        document.querySelectorAll(".faq-item").forEach(faq => {
+
+            if (faq !== item) {
+
+                faq.classList.remove("active");
+
+            }
+
+        });
+
+        item.classList.toggle("active");
+
+    });
+
+});
+
+/* Testimonials Auto Slider */
+
+const slider = document.querySelector(".testimonial-slider");
+
+if (slider) {
+
+    let scrollAmount = 0;
+
+    setInterval(() => {
+
+        scrollAmount += 380;
+
+        if (scrollAmount >= slider.scrollWidth - slider.clientWidth) {
+
+            scrollAmount = 0;
+
+        }
+
+        slider.scrollTo({
+
+            left: scrollAmount,
+
+            behavior: "smooth"
+
+        });
+
+    }, 4000);
+
+}
+
+/* Golden Particles */
+
+const particleContainer = document.querySelector(".gold-particles");
+
+if (particleContainer) {
+
+    for (let i = 0; i < 40; i++) {
+
+        const particle = document.createElement("span");
+
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.animationDuration = 4 + Math.random() * 6 + "s";
+        particle.style.animationDelay = Math.random() * 5 + "s";
+        particle.style.opacity = Math.random();
+
+        particleContainer.appendChild(particle);
+
     }
-});
-// Hero Animation
 
-window.addEventListener("load",()=>{
+}
 
-gsap.from(".hero h5",{
-y:30,
-opacity:0,
-duration:1
-});
+/* Page Loader */
 
-gsap.from(".hero-title",{
-y:50,
-opacity:0,
-duration:1.2,
-delay:.2
-});
+window.addEventListener("load", () => {
 
-gsap.from(".hero p",{
-y:30,
-opacity:0,
-duration:1,
-delay:.5
-});
+    const loader = document.querySelector(".loader");
 
-gsap.from(".hero-buttons",{
-y:30,
-opacity:0,
-duration:1,
-delay:.8
-});
+    if (loader) {
+
+        loader.style.opacity = "0";
+
+        setTimeout(() => {
+
+            loader.style.display = "none";
+
+        }, 600);
+
+    }
 
 });
+
+/* Current Year */
+
+const year = document.querySelector("#year");
+
+if (year) {
+
+    year.textContent = new Date().getFullYear();
+
+}
+
+console.log("Hartion Studio Website Loaded Successfully");
